@@ -36,7 +36,7 @@ architecture rtl of processor is
     component reg_bank
         port (
             Clk : in std_logic; -- Reloj
-            NRst : in std_logic; -- Reset asincrono a nivel alto
+            Reset : in std_logic; -- Reset asincrono a nivel alto
             Wd3 : in std_logic_vector(31 downto 0); -- Dato de escritura
             We3 : in std_logic; -- Write enable
             A1 : in std_logic_vector(4 downto 0); -- Direccion Registro Lectura 1
@@ -106,7 +106,7 @@ begin
     Registry: reg_bank
     port map(
         Clk => Clk,
-        NRst => Reset,
+        Reset => Reset,
         Wd3 => MemToRegMux,
         We3 => RegWrite,
         A1 => IDataIn(25 downto 21), -- CHECK
