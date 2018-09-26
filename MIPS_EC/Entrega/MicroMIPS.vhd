@@ -1,12 +1,12 @@
 ----------------------------------------------------------------------
 -- Fichero: MicroMIPS.vhd
--- Descripción: Microprocesador MIPS
+-- Descripciï¿½n: Microprocesador MIPS
 
--- Autores: Rafael Sánchez Sánchez y Sergio Galán Martín
--- Asignatura: EC 1º grado
--- Grupo de Prácticas: 2101
--- Grupo de Teoría: 210
--- Práctica: 5
+-- Autores: Rafael Sï¿½nchez Sï¿½nchez y Sergio Galï¿½n Martï¿½n
+-- Asignatura: EC 1ï¿½ grado
+-- Grupo de Prï¿½cticas: 2101
+-- Grupo de Teorï¿½a: 210
+-- Prï¿½ctica: 5
 -- Ejercicio: 3
 ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ use IEEE.std_logic_arith.ALL;
 use IEEE.std_logic_signed.ALL;
 entity MicroMIPS is
 
--- Declaración de entradas y salidas
+-- Declaraciï¿½n de entradas y salidas
 port(
 	MemProgData: in std_logic_vector (31 downto 0);
 	MemDataDataRead: in std_logic_vector(31 downto 0);
@@ -31,7 +31,7 @@ end MicroMIPS;
 
 architecture behavioural of MicroMIPS is
 
---Señales
+--Seï¿½ales
 	signal A1, A2, A3,PC2RAuxAddr, RegDestAux: std_logic_vector (4 downto 0);
 	signal OPCode, Funct: std_logic_vector (5 downto 0);
 	signal AluControl: std_logic_vector (2 downto 0);
@@ -56,44 +56,44 @@ architecture behavioural of MicroMIPS is
 	component RegsMIPS
 		port (
 				Clk : in std_logic; -- Reloj
-				NRst : in std_logic; -- Reset asíncrono a nivel bajo
+				NRst : in std_logic; -- Reset asï¿½ncrono a nivel bajo
 				Wd3 : in std_logic_vector(31 downto 0); -- Dato de escritura
 				We3 : in std_logic; -- Write enable
-				A1 : in std_logic_vector(4 downto 0); -- Dirección Registro Lectura 1
-				A2 : in std_logic_vector(4 downto 0); -- Dirección Registro Lectura 2
-				A3 : in std_logic_vector(4 downto 0); -- Dirección Registro Escritura
+				A1 : in std_logic_vector(4 downto 0); -- Direcciï¿½n Registro Lectura 1
+				A2 : in std_logic_vector(4 downto 0); -- Direcciï¿½n Registro Lectura 2
+				A3 : in std_logic_vector(4 downto 0); -- Direcciï¿½n Registro Escritura
 				Rd1 : out std_logic_vector(31 downto 0); -- Salida 1
 				Rd2 : out std_logic_vector(31 downto 0) --Salida 2
-			); 
+			);
 	end component;
 
 	--Unidad de control
 	component UnidadControl
 		port(
-				OPCode : in  std_logic_vector (5 downto 0); -- OPCode de la instrucción
-				Funct : in std_logic_vector(5 downto 0); -- Funct de la instrucción
-				-- Señales para el PC
+				OPCode : in  std_logic_vector (5 downto 0); -- OPCode de la instrucciï¿½n
+				Funct : in std_logic_vector(5 downto 0); -- Funct de la instrucciï¿½n
+				-- Seï¿½ales para el PC
 				Jump : out  std_logic;
 				RegToPC : out std_logic;
 				Branch : out  std_logic;
 				PCToReg : out std_logic;
-				-- Señales para la memoria
+				-- Seï¿½ales para la memoria
 				MemToReg : out  std_logic;
 				MemWrite : out  std_logic;
-				
-				-- Señales para la ALU
+
+				-- Seï¿½ales para la ALU
 				ALUSrc : out  std_logic;
 				ALUControl : out  std_logic_vector (2 downto 0);
 				ExtCero : out std_logic;
-				
-				-- Señales para el GPR
+
+				-- Seï¿½ales para el GPR
 				RegWrite : out  std_logic;
 				RegDest : out  std_logic
 				);
 		end component;
 
 	begin
-		
+
 		ALU: AluMIPS
 		port map(
 			Op1 => Rd1,
@@ -102,7 +102,7 @@ architecture behavioural of MicroMIPS is
 			Res => MemDataAddrAux,
 			z => z
 			);
-		
+
 		Bench: RegsMIPS
 		port map(
 			Clk => Clk,
@@ -115,7 +115,7 @@ architecture behavioural of MicroMIPS is
 			Rd1 => Rd1,
 			Rd2 => Rd2
 			);
-			
+
 		UnidadCtrl: UnidadControl
 		port map(
 			OPCode => OPCode,
@@ -132,16 +132,16 @@ architecture behavioural of MicroMIPS is
 			RegWrite => RegWrite,
 			RegDest => RegDest
 			);
-			
+
 		MemDataAddr <= MemDataAddrAux;
 		MemDataWE <= MemWrite;
 		MemProgAddr <= PCOut;
 		MemDataDataWrite <= Rd2;
 		Funct <= MemProgData (5 downto 0);
 		OPCode <= MemProgData (31 downto 26);
-		
+
 		--Mux 2 a 1
-		
+
 		M2RAux <= MemDataAddrAux when MemToReg = '0' else MemDataDataRead;
 		PCToRAux <= M2RAux when PCToReg = '0' else PCPlus4;
 		PCSrc <= Branch and z;
@@ -173,10 +173,10 @@ architecture behavioural of MicroMIPS is
 			PCOut <= RegToPCAux;
 		end if;
 		end process;
-		
-		
-		
-		
-		
+
+
+
+
+
 
 end behavioural;
