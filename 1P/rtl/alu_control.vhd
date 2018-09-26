@@ -30,5 +30,5 @@ begin
                 "0111" when ALUOp = "010" and Funct(5 downto 0) = "100101" else  -- or
                 "1101" when ALUOp = "011"                                  else  -- lui
                 "1010" when ALUOp = "100"                                  else  -- slti
-                "---"
+                "----";
 end architecture;

@@ -40,12 +40,12 @@ architecture rtl of control_unit is
   constant OP_SW    : t_OpCode := "101011";
   constant OP_LW    : t_OpCode := "100011";
   constant OP_LUI   : t_OpCode := "001111";
-  constant OP_J     : t_opCpde := "000010";
+  constant OP_J     : t_opCode := "000010";
   constant OP_SLTI  : t_OpCode := "001010";
 
 begin
 
-  Branch <= '1' when OpCode = OP_J or OpCode = OP_BEQ else
+  Branch <= '1' when (OpCode = OP_J) or (OpCode = OP_BEQ) else
             '0';
   RegDst <= '1' when OpCode = OP_RTYPE else
             '0';
