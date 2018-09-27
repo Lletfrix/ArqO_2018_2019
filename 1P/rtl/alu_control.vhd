@@ -28,6 +28,8 @@ begin
                 "0001" when ALUOp = "010" and Funct(5 downto 0) = "100010" else  -- sub
                 "0100" when ALUOp = "010" and Funct(5 downto 0) = "100100" else  -- and
                 "0111" when ALUOp = "010" and Funct(5 downto 0) = "100101" else  -- or
+                "1010" when ALUOp = "010" and Funct(5 downto 0) = "101010" else -- slt
+                "0110" when ALUOp = "010" and Funct(5 downto 0) = "100110" else -- xor
                 "1101" when ALUOp = "011"                                  else  -- lui
                 "1010" when ALUOp = "100"                                  else  -- slti
                 "----";

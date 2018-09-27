@@ -118,7 +118,7 @@ begin
 
     ArithmeticLogicUnit: alu
     port map(
-        OpA => ReadData2,
+        OpA => ReadData1,
         OpB => AluSrcMux,
         Control => AluControl,
         Result => DataAddr,
