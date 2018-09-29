@@ -45,7 +45,7 @@ architecture rtl of control_unit is
 
 begin
 
-  Branch <= '1' when (OpCode = OP_J) or (OpCode = OP_BEQ) else
+  Branch <= '1' when OpCode = OP_BEQ else
             '0';
   RegDst <= '1' when OpCode = OP_RTYPE else
             '0';
@@ -55,7 +55,7 @@ begin
               '0';
   MemWrite <= '1' when OpCode = OP_SW else
               '0';
-  ALUSrc <= '1' when OpCode = OP_BEQ or OpCode = OP_SW or OpCode = OP_LW or OpCode = OP_LUI or OpCode = OP_SLTI else
+  ALUSrc <= '1' when OpCode = OP_SW or OpCode = OP_LW or OpCode = OP_LUI or OpCode = OP_SLTI else
             '0';
   RegWrite <= '1' when OpCode = OP_RTYPE or OpCode = OP_LW or OpCode = OP_LUI or OpCode = OP_SLTI else
               '0';
