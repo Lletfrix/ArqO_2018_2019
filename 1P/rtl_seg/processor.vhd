@@ -27,64 +27,71 @@ end processor;
 
 architecture rtl of processor is
 
-    signal PC, ReadData1, ReadData2, AluSrcMux, DataAddr, MemToRegMux, JumpMux, BranchZMux, ExtendedInm, JumpAddr: std_logic_vector (31 downto 0);
-    signal RegDstMux: std_logic_vector (4 downto 0);
-    signal AluControl: std_logic_vector (3 downto 0);
-    signal AluOp: std_logic_vector (2 downto 0);
-    signal Z, RegWrite, Branch, Jump, MemToReg, MemWrite, MemRead, AluSrc, RegDst: std_logic;
+  signal PC, ReadData1, ReadData2, AluSrcMux, DataAddr, MemToRegMux, JumpMux, BranchZMux, ExtendedInm, JumpAddr, PC4 : std_logic_vector (31 downto 0);
+  signal PC4IFID, IDataInIFID                                                                                        : std_logic_vector (31 downto 0);
+  signal ExtendedInmIDEX, ReadData1IDEX, ReadData2IDEX, PC4IDEX                                                      : std_logic_vector (31 downto 0);
+  signal DataAddrEXMEM, ReadData2EXMEM                                                                               : std_logic_vector (31 downto 0);
+  signal DataAddrMEMWB, DDataInMEMWB                                                                                 : std_logic_vector (31 downto 0);
+  signal FunctIDEX                                                                                                   : std_logic_vector (5 downto 0);
+  signal RegDstMux, RTIDEX, RDIDEX, RegDstMuxEXMEM, RegDstMuxMEMWB                                                   : std_logic_vector (4 downto 0);
+  signal AluControl                                                                                                  : std_logic_vector (3 downto 0);
+  signal AluOp, AluOpIDEX                                                                                            : std_logic_vector (2 downto 0);
+  signal Z, RegWrite, Branch, Jump, MemToReg, MemWrite, MemRead, AluSrc, RegDst                                      : std_logic;
+  signal RegWriteIDEX, MemToRegIDEX, MemReadIDEX, MemWriteIDEX, BranchIDEX, RegDstIDEX, AluSrcIDEX                   : std_logic;
+  signal RegWriteEXMEM, MemToRegEXMEM, MemReadEXMEM, MemWriteEXMEM                                                   : std_logic;
+  signal RegWriteMEMWB, MemToRegMEMWB                                                                                : std_logic;
+  component reg_bank
+    port (
+      Clk   : in  std_logic;            -- Reloj
+      Reset : in  std_logic;            -- Reset asincrono a nivel alto
+      Wd3   : in  std_logic_vector(31 downto 0);  -- Dato de escritura
+      We3   : in  std_logic;            -- Write enable
+      A1    : in  std_logic_vector(4 downto 0);  -- Direccion Registro Lectura 1
+      A2    : in  std_logic_vector(4 downto 0);  -- Direccion Registro Lectura 2
+      A3    : in  std_logic_vector(4 downto 0);  -- Direccion Registro Escritura
+      Rd1   : out std_logic_vector(31 downto 0);  -- Salida 1
+      Rd2   : out std_logic_vector(31 downto 0)  --Salida 2
+      );
+  end component;
 
-    component reg_bank
-        port (
-            Clk : in std_logic; -- Reloj
-            Reset : in std_logic; -- Reset asincrono a nivel alto
-            Wd3 : in std_logic_vector(31 downto 0); -- Dato de escritura
-            We3 : in std_logic; -- Write enable
-            A1 : in std_logic_vector(4 downto 0); -- Direccion Registro Lectura 1
-            A2 : in std_logic_vector(4 downto 0); -- Direccion Registro Lectura 2
-            A3 : in std_logic_vector(4 downto 0); -- Direccion Registro Escritura
-            Rd1 : out std_logic_vector(31 downto 0); -- Salida 1
-            Rd2 : out std_logic_vector(31 downto 0) --Salida 2
-            );
-    end component;
+  component alu
+    port (
+      OpA     : in  std_logic_vector (31 downto 0);  -- Operando A
+      OpB     : in  std_logic_vector (31 downto 0);  -- Operando B
+      Control : in  std_logic_vector (3 downto 0);  -- Codigo de control=op. a ejecutar
+      Result  : out std_logic_vector (31 downto 0);  -- Resultado
+      ZFlag   : out std_logic           -- Flag Z
+      );
+  end component;
 
-    component alu
-        port (
-           OpA     : in  std_logic_vector (31 downto 0); -- Operando A
-           OpB     : in  std_logic_vector (31 downto 0); -- Operando B
-           Control : in  std_logic_vector ( 3 downto 0); -- Codigo de control=op. a ejecutar
-           Result  : out std_logic_vector (31 downto 0); -- Resultado
-           ZFlag   : out std_logic                       -- Flag Z
-        );
-    end component;
+  component control_unit
+    port (
+      -- Entrada = codigo de operacion en la instruccion:
+      OpCode   : in  std_logic_vector (5 downto 0);
+      Branch   : out std_logic;         -- 1 = Ejecutandose instruccion branch
+      Jump     : out std_logic;         -- 1 = Ejecutandose instruccion jump
+      MemToReg : out std_logic;  -- 1=Escribir en registro la salida de la mem.
+      MemWrite : out std_logic;         -- Escribir la memoria
+      MemRead  : out std_logic;         -- Leer la memoria
+      ALUSrc   : out std_logic;  -- 0=oper.B es registro, 1=es valor inm.
+      ALUOp    : out std_logic_vector (2 downto 0);  -- Tipo operacion para control de la ALU
+      RegWrite : out std_logic;         -- 1=Escribir registro
+      RegDst   : out std_logic          -- 0=Reg. destino es rt, 1=rd
+      );
+  end component;
 
-    component control_unit
-      port (
-        -- Entrada = codigo de operacion en la instruccion:
-        OpCode   : in  std_logic_vector (5 downto 0);
-        Branch   : out std_logic;           -- 1 = Ejecutandose instruccion branch
-        Jump     : out std_logic;           -- 1 = Ejecutandose instruccion jump
-        MemToReg : out std_logic;  -- 1=Escribir en registro la salida de la mem.
-        MemWrite : out std_logic;           -- Escribir la memoria
-        MemRead  : out std_logic;           -- Leer la memoria
-        ALUSrc   : out std_logic;  -- 0=oper.B es registro, 1=es valor inm.
-        ALUOp    : out std_logic_vector (2 downto 0);  -- Tipo operacion para control de la ALU
-        RegWrite : out std_logic;           -- 1=Escribir registro
-        RegDst   : out std_logic            -- 0=Reg. destino es rt, 1=rd
-        );
-    end component;
-
-    component alu_control
-      port (
-        ALUOp      : in  std_logic_vector (2 downto 0);  -- Codigo control desde la unidad de control
-        Funct      : in  std_logic_vector (5 downto 0);  -- Campo "funct" de la instruccion
-        ALUControl : out std_logic_vector (3 downto 0)  -- Define operacion a ejecutar por ALU
-        );
-    end component;
+  component alu_control
+    port (
+      ALUOp      : in  std_logic_vector (2 downto 0);  -- Codigo control desde la unidad de control
+      Funct      : in  std_logic_vector (5 downto 0);  -- Campo "funct" de la instruccion
+      ALUControl : out std_logic_vector (3 downto 0)  -- Define operacion a ejecutar por ALU
+      );
+  end component;
 
 begin
-    ControlUnit: control_unit
+  ControlUnit : control_unit
     port map(
-      OpCode   => IDataIn(31 downto 26),
+      OpCode   => IDataInIFID(31 downto 26),
       Branch   => Branch,
       Jump     => Jump,
       MemToReg => MemToReg,
@@ -96,98 +103,161 @@ begin
       RegDst   => RegDst
       );
 
-    ALUControlUnit: alu_control
-      port map(
-        ALUOp => AluOp,
-        Funct => IDataIn(5 downto 0),
-        ALUControl => AluControl
-        );
-
-    Registry: reg_bank
+  ALUControlUnit : alu_control
     port map(
-        Clk => Clk,
-        Reset => Reset,
-        Wd3 => MemToRegMux,
-        We3 => RegWrite,
-        A1 => IDataIn(25 downto 21), -- CHECK
-        A2 => IDataIn(20 downto 16), -- Direccion Registro Lectura 2
-        A3 => RegDstMux, -- Direccion Registro Escritura
-        Rd1 => ReadData1, -- Salida 1
-        Rd2 => ReadData2
-        );
+      ALUOp      => AluOpIDEX,
+      Funct      => FunctIDEX,
+      ALUControl => AluControl
+      );
 
-    ArithmeticLogicUnit: alu
+  Registry : reg_bank
     port map(
-        OpA => ReadData1,
-        OpB => AluSrcMux,
-        Control => AluControl,
-        Result => DataAddr,
-        ZFlag => Z
-        );
+      Clk   => Clk,
+      Reset => Reset,
+      Wd3   => MemToRegMux,
+      We3   => RegWriteMEMWB,
+      A1    => IDataInIFID(25 downto 21),  -- CHECK
+      A2    => IDataInIFID(20 downto 16),  -- Direccion Registro Lectura 2
+      A3    => RegDstMuxMEMWB,             -- Direccion Registro Escritura
+      Rd1   => ReadData1,                  -- Salida 1
+      Rd2   => ReadData2
+      );
 
-    ExtendedInm(31 downto 16) <= (others => IDataIn(15));
-    ExtendedInm(15 downto 0) <= IDataIn(15 downto 0);
+  ArithmeticLogicUnit : alu
+    port map(
+      OpA     => ReadData1IDEX,
+      OpB     => AluSrcMux,
+      Control => AluControl,
+      Result  => DataAddr,
+      ZFlag   => Z
+      );
 
-    RegDstMux <= IDataIn(20 downto 16) when RegDst = '0' else
-                 IDataIn(15 downto 11);
+  ExtendedInm(31 downto 16) <= (others => IDataIn(15));
+  ExtendedInm(15 downto 0)  <= IDataIn(15 downto 0);
 
-    AluSrcMux <= ExtendedInm when ALUSrc = '1' else
-                 ReadData2;
+  RegDstMux <= RTIDEX when RegDst = '0' else
+               RDIDEX;
 
-    MemToRegMux <= DDataIn when MemToReg = '1' else
-                   DataAddr;
+  AluSrcMux <= ExtendedInmIDEX when ALUSrc = '1' else
+               ReadData2IDEX;
 
-    PC4 <= PC + 4;
+  MemToRegMux <= DDataInMEMWB when MemToRegMEMWB = '1' else
+                 DataAddrMEMWB;
 
-    JumpAddr(31 downto 28) <= PC4(31 downto 28);
-    JumpAddr(27 downto 0) <= (IDataIn(25 downto 0) & "00");
+  PC4 <= PC + 4;
 
-    JumpMux <= JumpAddr when Jump = '1' else
-               BranchZMux;
+  JumpAddr(31 downto 28) <= PC4IFID(31 downto 28);
+  JumpAddr(27 downto 0)  <= (IDataInIFID(25 downto 0) & "00");
 
-    BranchZMux <= PC4 when Branch = '0' or Z = '0' else
-                  (ExtendedInm(29 downto 0) & "00") + PC4;
+  JumpMux <= JumpAddr when Jump = '1' else
+             BranchZMux;
 
-    IAddr <= PC;
+  BranchZMux <= PC4IDEX when BranchIDEX = '0' or Z = '0' else
+                (ExtendedInmIDEX(29 downto 0) & "00") + PC4IDEX;
 
-    DAddr <= DataAddr;
-    DDataOut <= ReadData2;
-    DRdEn <= MemRead;
-    DWrEn <= MemWrite;
+  IAddr <= PC;
 
-   process (Reset, Clk)
-   begin
-   if (Reset = '1') then
-       PC <= (others => '0');
-   elsif rising_edge(Clk) then
-       PC <= JumpMux; -- TODO:
-   end if;
-   end process;
+  DAddr    <= DataAddrEXMEM;
+  DDataOut <= ReadData2EXMEM;
+  DRdEn    <= MemReadEXMEM;
+  DWrEn    <= MemWriteEXMEM;
 
-   process (Reset, Clk) --ID/EX
-   begin
-   if (Reset = '1') then
-       RegWriteID/EX <= '0',
-       MemToRegID/EX <= '0',
-       MemReadID/EX <= '0',
-       MemWriteID/EX <= '0'
-       BranchID/EX <= '0',
-       RegDestID/EX <= '0',
-       AluSrcID/EX <= '0',
-       AluOpID/EX <= "000",
-       ReadData1ID/EX <= (others => '0'),
-       ReadData2ID/EX <= (others => '0'),
-       PC4ID/EX <= (others => '0');
+  process (Reset, Clk)
+  begin
+    if (Reset = '1') then
+      PC <= (others => '0');
     elsif rising_edge(Clk) then
-       RegWriteID/EX <= RegWrite,
-       MemToRegID/EX <= MemToReg,
-       MemReadID/EX <= MemRead,
-       MemWriteID/EX <= MemWrite,
-       BranchID/EX <= Branch,
-       RegDestID/EX <= RegDest,
-       AluSrcID/EX <= AluSrc,
-       AluOpID/EX <= AluOp,
-       ReadData1ID/EX <= ReadData1,
-       ReadData2ID/EX <= ReadData2,
-       PC4ID/EX <= PC4IF/ID;
+      PC <= JumpMux;
+    end if;
+  end process;
+
+--IFID registry
+  process (Reset, Clk)
+  begin
+    if (Reset = '1') then
+      IDataInIFID <= (others => '0');
+      PC4IFID     <= (others => '0');
+    elsif rising_edge(Clk) then
+      IDataInIFID <= IDataIn;
+      PC4IFID     <= PC4;
+    end if;
+  end process;
+
+-- ID/EX registry
+  process (Reset, Clk)
+  begin
+    if (Reset = '1') then
+      RegWriteIDEX    <= '0';
+      MemToRegIDEX    <= '0';
+      MemReadIDEX     <= '0';
+      MemWriteIDEX    <= '0';
+      BranchIDEX      <= '0';
+      RegDstIDEX      <= '0';
+      AluSrcIDEX      <= '0';
+      RTIDEX          <= (others => '0');
+      RDIDEX          <= (others => '0');
+      ExtendedInmIDEX <= (others => '0');
+      AluOpIDEX       <= (others => '0');
+      ReadData1IDEX   <= (others => '0');
+      ReadData2IDEX   <= (others => '0');
+      PC4IDEX         <= (others => '0');
+    elsif rising_edge(Clk) then
+      RegWriteIDEX    <= RegWrite;
+      MemToRegIDEX    <= MemToReg;
+      MemReadIDEX     <= MemRead;
+      MemWriteIDEX    <= MemWrite;
+      BranchIDEX      <= Branch;
+      RegDstIDEX      <= RegDst;
+      AluSrcIDEX      <= AluSrc;
+      RTIDEX          <= IDataInIFID (20 downto 16);
+      RDIDEX          <= IDataInIFID (15 downto 11);
+      FunctIDEX       <= IDataInIFID (5 downto 0);
+      ExtendedInmIDEX <= ExtendedInm;
+      AluOpIDEX       <= AluOp;
+      ReadData1IDEX   <= ReadData1;
+      ReadData2IDEX   <= ReadData2;
+      PC4IDEX         <= PC4IFID;
+    end if;
+  end process;
+
+-- EX/MEM registry
+  process(Reset, Clk)
+  begin
+    if(Reset = '1') then
+      RegWriteEXMEM  <= '0';
+      MemToRegEXMEM  <= '0';
+      MemReadEXMEM   <= '0';
+      MemWriteEXMEM  <= '0';
+      RegDstMuxEXMEM <= (others => '0');
+      DataAddrEXMEM  <= (others => '0');
+      ReadData2EXMEM <= (others => '0');
+    elsif rising_edge(Clk) then
+      RegWriteEXMEM  <= RegWriteIDEX;
+      MemToRegEXMEM  <= MemToRegIDEX;
+      MemReadEXMEM   <= MemReadIDEX;
+      MemWriteEXMEM  <= MemWriteIDEX;
+      RegDstMuxEXMEM <= RegDstMux;
+      DataAddrEXMEM  <= DataAddr;
+      ReadData2EXMEM <= ReadData2IDEX;
+    end if;
+  end process;
+
+-- MEM/WB Registry
+  process(Reset, Clk)
+  begin
+    if(Reset = '1') then
+      RegWriteMEMWB  <= '0';
+      MemToRegMEMWB  <= '0';
+      RegDstMuxMEMWB <= (others => '0');
+      DataAddrMEMWB  <= (others => '0');
+      DDataInMEMWB   <= (others => '0');
+    elsif rising_edge(Clk) then
+      RegWriteMEMWB  <= RegWriteEXMEM;
+      MemToRegMEMWB  <= MemToRegEXMEM;
+      RegDstMuxMEMWB <= RegDstMuxEXMEM;
+      DataAddrMEMWB  <= DataAddrEXMEM;
+      DDataInMEMWB   <= DDataIn;
+    end if;
+  end process;
+
 end architecture;
