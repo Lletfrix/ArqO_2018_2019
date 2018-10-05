@@ -132,13 +132,13 @@ begin
       ZFlag   => Z
       );
 
-  ExtendedInm(31 downto 16) <= (others => IDataIn(15));
-  ExtendedInm(15 downto 0)  <= IDataIn(15 downto 0);
+  ExtendedInm(31 downto 16) <= (others => IDataInIFID(15));
+  ExtendedInm(15 downto 0)  <= IDataInIFID(15 downto 0);
 
-  RegDstMux <= RTIDEX when RegDst = '0' else
+  RegDstMux <= RTIDEX when RegDstIDEX = '0' else
                RDIDEX;
 
-  AluSrcMux <= ExtendedInmIDEX when ALUSrc = '1' else
+  AluSrcMux <= ExtendedInmIDEX when ALUSrcIDEX = '1' else
                ReadData2IDEX;
 
   MemToRegMux <= DDataInMEMWB when MemToRegMEMWB = '1' else
@@ -152,7 +152,7 @@ begin
   JumpMux <= JumpAddr when Jump = '1' else
              BranchZMux;
 
-  BranchZMux <= PC4IDEX when BranchIDEX = '0' or Z = '0' else
+  BranchZMux <= PC4 when BranchIDEX = '0' or Z = '0' else
                 (ExtendedInmIDEX(29 downto 0) & "00") + PC4IDEX;
 
   IAddr <= PC;
