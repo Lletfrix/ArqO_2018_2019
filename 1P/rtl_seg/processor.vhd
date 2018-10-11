@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Procesador MIPS con pipeline curso Arquitectura 2018-19
 --
--- (INCLUIR AQUI LA INFORMACION SOBRE LOS AUTORES)
+-- Rafael Sánchez Sánchez, Sergio Galán Martín.
 --
 --------------------------------------------------------------------------------
 
@@ -201,6 +201,7 @@ begin
       ReadData1IDEX   <= (others => '0');
       ReadData2IDEX   <= (others => '0');
       PC4IDEX         <= (others => '0');
+      FunctIDEX       <= (others => '0');
     elsif rising_edge(Clk) then
       RegWriteIDEX    <= RegWrite;
       MemToRegIDEX    <= MemToReg;
