@@ -8,12 +8,12 @@ if [file exists work] {
 }
 vlib work
 
-# Compilar rtl_seg:
-vcom -work work -2002 -explicit -check_synthesis ../rtl_seg/reg_bank.vhd
-vcom -work work -2002 -explicit -check_synthesis ../rtl_seg/alu.vhd
-vcom -work work -2002 -explicit -check_synthesis ../rtl_seg/alu_control.vhd
-vcom -work work -2002 -explicit -check_synthesis ../rtl_seg/control_unit.vhd
-vcom -work work -2002 -explicit -check_synthesis ../rtl_seg/processor.vhd
+# Compilar rtl:
+vcom -work work -2002 -explicit -check_synthesis ../rtl/reg_bank.vhd
+vcom -work work -2002 -explicit -check_synthesis ../rtl/alu.vhd
+vcom -work work -2002 -explicit -check_synthesis ../rtl/alu_control.vhd
+vcom -work work -2002 -explicit -check_synthesis ../rtl/control_unit.vhd
+vcom -work work -2002 -explicit -check_synthesis ../rtl/processor.vhd
 
 # Compilar testbench:
 vcom -work work -2002 -explicit memory.vhd

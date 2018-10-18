@@ -28,17 +28,18 @@ end processor;
 architecture rtl of processor is
 
   signal PC, ReadData1, ReadData2, AluSrcMux, DataAddr, MemToRegMux, JumpMux, BranchZMux, ExtendedInm, JumpAddr, PC4 : std_logic_vector (31 downto 0);
-  signal ForwardAMux ForwardBMux                                                                                     : std_logic_vector (31 downto 0);
+  signal ForwardAMux, ForwardBMux                                                                                    : std_logic_vector (31 downto 0);
   signal PC4IFID, IDataInIFID                                                                                        : std_logic_vector (31 downto 0);
   signal ExtendedInmIDEX, ReadData1IDEX, ReadData2IDEX, PC4IDEX                                                      : std_logic_vector (31 downto 0);
   signal DataAddrEXMEM, ReadData2EXMEM                                                                               : std_logic_vector (31 downto 0);
   signal DataAddrMEMWB, DDataInMEMWB                                                                                 : std_logic_vector (31 downto 0);
+  signal NopMux                                                                                                      : std_logic_vector (10 downto 0);
   signal FunctIDEX                                                                                                   : std_logic_vector (5 downto 0);
   signal RegDstMux, RSIDEX, RTIDEX, RDIDEX, RegDstMuxEXMEM, RegDstMuxMEMWB                                           : std_logic_vector (4 downto 0);
   signal AluControl                                                                                                  : std_logic_vector (3 downto 0);
   signal AluOp, AluOpIDEX                                                                                            : std_logic_vector (2 downto 0);
   signal ForwardA, ForwardB                                                                                          : std_logic_vector (1 downto 0);
-  signal Z, RegWrite, Branch, Jump, MemToReg, MemWrite, MemRead, AluSrc, RegDst                                      : std_logic;
+  signal Z, RegWrite, Branch, Jump, MemToReg, MemWrite, MemRead, AluSrc, RegDst, NopRiesgo, IFIDWrite, PCwrite       : std_logic;
   signal RegWriteIDEX, MemToRegIDEX, MemReadIDEX, MemWriteIDEX, BranchIDEX, RegDstIDEX, AluSrcIDEX                   : std_logic;
   signal RegWriteEXMEM, MemToRegEXMEM, MemReadEXMEM, MemWriteEXMEM                                                   : std_logic;
   signal RegWriteMEMWB, MemToRegMEMWB                                                                                : std_logic;
@@ -70,13 +71,13 @@ architecture rtl of processor is
     port (
       -- Entrada = codigo de operacion en la instruccion:
       OpCode   : in  std_logic_vector (5 downto 0);
+      ALUOp    : out std_logic_vector (2 downto 0);  -- Tipo operacion para control de la ALU
       Branch   : out std_logic;         -- 1 = Ejecutandose instruccion branch
       Jump     : out std_logic;         -- 1 = Ejecutandose instruccion jump
       MemToReg : out std_logic;  -- 1=Escribir en registro la salida de la mem.
       MemWrite : out std_logic;         -- Escribir la memoria
       MemRead  : out std_logic;         -- Leer la memoria
       ALUSrc   : out std_logic;  -- 0=oper.B es registro, 1=es valor inm.
-      ALUOp    : out std_logic_vector (2 downto 0);  -- Tipo operacion para control de la ALU
       RegWrite : out std_logic;         -- 1=Escribir registro
       RegDst   : out std_logic          -- 0=Reg. destino es rt, 1=rd
       );
@@ -151,29 +152,39 @@ begin
   JumpAddr(31 downto 28) <= PC4IFID(31 downto 28);
   JumpAddr(27 downto 0)  <= (IDataInIFID(25 downto 0) & "00");
 
-  JumpMux <= JumpAddr when Jump = '1' else
+  JumpMux <= JumpAddr when NopMux(6) = '1' else
              BranchZMux;
 
   BranchZMux <= PC4 when BranchIDEX = '0' or Z = '0' else
                 (ExtendedInmIDEX(29 downto 0) & "00") + PC4IDEX;
 
-  ForwardA <= "01" when RegWriteMEMWB and (RegDstMuxMEMWB /= "0000") and not (RegWriteEXMEM and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX)) and (RegDstMuxMEMWB = RSIDEX) else
-              "10" when RegWriteEXMEM and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX) else
+  ForwardA <= "01" when RegWriteMEMWB = '1' and (RegDstMuxMEMWB /= "0000") and not (RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX)) and (RegDstMuxMEMWB = RSIDEX) else
+              "10" when RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX) else
               "00";
 
-  ForwardB <= "01" when RegWriteMEMWB and (RegDstMuxMEMWB /= "0000") and not (RegWriteEXMEM and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RTIDEX)) and (RegDstMuxMEMWB = RTIDEX) else
-              "10" when RegWriteEXMEM and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RTIDEX) else
+  ForwardB <= "01" when RegWriteMEMWB = '1' and (RegDstMuxMEMWB /= "0000") and not (RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RTIDEX)) and (RegDstMuxMEMWB = RTIDEX) else
+              "10" when RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RTIDEX) else
               "00";
 
   ForwardAMux <= ReadData1IDEX when ForwardA = "00" else
                  MemToRegMux   when ForwardA = "10" else
                  DataAddrEXMEM when ForwardA = "01" else
-                 "00";
+                 (others => '0');
 
   ForwardBMux <= ReadData2IDEX when ForwardA = "00" else
                  MemToRegMux   when ForwardA = "10" else
                  DataAddrEXMEM when ForwardA = "01" else
-                 "00";
+                 (others => '0');
+
+  NopMux <= (others => '0') when NopRiesgo = '1' else
+            ALUOp & Branch & Jump & MemToReg & MemWrite & MemRead & ALUSrc & RegWrite & RegDst;
+
+  NopRiesgo <= '1' when MemReadIDEX = '1' and ((RTIDEX = IDataInIFID (25 downto 21)) or (RTIDEX = IDataInIFID (20 downto 16))) else
+               '0';
+  PCWrite <= '0' when MemReadIDEX = '1' and ((RTIDEX = IDataInIFID (25 downto 21)) or (RTIDEX = IDataInIFID (20 downto 16))) else
+             '1';
+  IFIDWrite <= '0' when MemReadIDEX = '1' and ((RTIDEX = IDataInIFID (25 downto 21)) or (RTIDEX = IDataInIFID (20 downto 16))) else
+               '1';
 
   IAddr <= PC;
 
@@ -187,7 +198,9 @@ begin
     if (Reset = '1') then
       PC <= (others => '0');
     elsif rising_edge(Clk) then
-      PC <= JumpMux;
+      if(PCWrite = '1') then
+        PC <= JumpMux;
+      end if;
     end if;
   end process;
 
@@ -198,8 +211,10 @@ begin
       IDataInIFID <= (others => '0');
       PC4IFID     <= (others => '0');
     elsif rising_edge(Clk) then
-      IDataInIFID <= IDataIn;
-      PC4IFID     <= PC4;
+      if(IFIDWrite = '1') then
+        IDataInIFID <= IDataIn;
+        PC4IFID     <= PC4;
+      end if;
     end if;
   end process;
 
@@ -224,19 +239,19 @@ begin
       PC4IDEX         <= (others => '0');
       FunctIDEX       <= (others => '0');
     elsif rising_edge(Clk) then
-      RegWriteIDEX    <= RegWrite;
-      MemToRegIDEX    <= MemToReg;
-      MemReadIDEX     <= MemRead;
-      MemWriteIDEX    <= MemWrite;
-      BranchIDEX      <= Branch;
-      RegDstIDEX      <= RegDst;
-      AluSrcIDEX      <= AluSrc;
+      BranchIDEX      <= NopMux(7);
+      MemToRegIDEX    <= NopMux(5);
+      MemWriteIDEX    <= NopMux(4);
+      MemReadIDEX     <= NopMux(3);
+      AluSrcIDEX      <= NopMux(2);
+      RegWriteIDEX    <= NopMux(1);
+      RegDstIDEX      <= NopMux(0);
       RSIDEX          <= IDataInIFID (25 downto 21);
       RTIDEX          <= IDataInIFID (20 downto 16);
       RDIDEX          <= IDataInIFID (15 downto 11);
       FunctIDEX       <= IDataInIFID (5 downto 0);
       ExtendedInmIDEX <= ExtendedInm;
-      AluOpIDEX       <= AluOp;
+      AluOpIDEX       <= NopMux(10 downto 8);
       ReadData1IDEX   <= ReadData1;
       ReadData2IDEX   <= ReadData2;
       PC4IDEX         <= PC4IFID;
