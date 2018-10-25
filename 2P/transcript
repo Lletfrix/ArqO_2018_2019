@@ -1,0 +1,115 @@
+cd sim
+do runsim.do
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit -check_synthesis ../rtl/reg_bank.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity reg_bank
+# -- Compiling architecture rtl of reg_bank
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit -check_synthesis ../rtl/alu.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity alu
+# -- Compiling architecture rtl of alu
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit -check_synthesis ../rtl/alu_control.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity alu_control
+# -- Compiling architecture rtl of alu_control
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit -check_synthesis ../rtl/control_unit.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity control_unit
+# -- Compiling architecture rtl of control_unit
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit -check_synthesis ../rtl/processor.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity processor
+# -- Compiling architecture rtl of processor
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit memory.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Loading package std_logic_textio
+# -- Compiling entity memory
+# -- Compiling architecture Behavioral of memory
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 14:10:50 on Oct 18,2018
+# vcom -reportprogress 300 -work work -2002 -explicit processor_tb.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity processor_tb
+# -- Compiling architecture tb of processor_tb
+# End time: 14:10:50 on Oct 18,2018, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -novopt processor_tb -gN_CYCLES=100 -gINIT_FILENAME_DATA="datos" -gINIT_FILENAME_INST="instrucciones" 
+# Start time: 14:10:50 on Oct 18,2018
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading work.processor_tb(tb)
+# Loading work.processor(rtl)
+# Loading work.control_unit(rtl)
+# Loading work.alu_control(rtl)
+# Loading work.reg_bank(rtl)
+# Loading work.alu(rtl)
+# Loading ieee.std_logic_textio(body)
+# Loading work.memory(behavioral)
+# 1
+# ** Note: COMIENZA LA SIMULACION
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb
+# ** Note: Se ha cargado la memoria 'datos'
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/i_data_mem
+# ** Note: Se ha cargado la memoria 'instrucciones'
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/i_inst_mem
+# 0
+# ** Note: SIMULACION FINALIZADA. COMPROBAR ONDAS.
+#    Time: 1055 ns  Iteration: 1  Instance: /processor_tb
+# Break key hit
+# End time: 14:16:00 on Oct 18,2018, Elapsed time: 0:05:10
+# Errors: 0, Warnings: 0

@@ -167,13 +167,13 @@ begin
               "00";
 
   ForwardAMux <= ReadData1IDEX when ForwardA = "00" else
-                 MemToRegMux   when ForwardA = "10" else
-                 DataAddrEXMEM when ForwardA = "01" else
+                 MemToRegMux   when ForwardA = "01" else  --10 por 01
+                 DataAddrEXMEM when ForwardA = "10" else
                  (others => '0');
 
   ForwardBMux <= ReadData2IDEX when ForwardA = "00" else
-                 MemToRegMux   when ForwardA = "10" else
-                 DataAddrEXMEM when ForwardA = "01" else
+                 MemToRegMux   when ForwardA = "01" else
+                 DataAddrEXMEM when ForwardA = "10" else
                  (others => '0');
 
   NopMux <= (others => '0') when NopRiesgo = '1' else
