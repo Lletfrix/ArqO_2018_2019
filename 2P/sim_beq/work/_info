@@ -1,0 +1,313 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/lletfrix/Documents/ArqO_2018_2019/2P/sim_beq
+Ealu
+Z1 w1538644628
+Z2 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z3 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z5 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z6 8../rtl/alu.vhd
+Z7 F../rtl/alu.vhd
+l0
+L15
+VbE4YMILN5ef:fc]m]KY001
+!s100 PZenWJ@F@Xc]_f<F91A7N1
+Z8 OV;C;10.5b;63
+32
+Z9 !s110 1540465011
+!i10b 1
+Z10 !s108 1540465011.000000
+Z11 !s90 -reportprogress|300|-work|work|-2002|-explicit|-check_synthesis|../rtl/alu.vhd|
+Z12 !s107 ../rtl/alu.vhd|
+!i113 1
+Z13 o-work work -2002 -explicit -check_synthesis
+Z14 tExplicit 1 CvgOpt 0
+Artl
+R2
+R3
+R4
+R5
+DEx4 work 3 alu 0 22 bE4YMILN5ef:fc]m]KY001
+l44
+L25
+VFmHlHkNdU^VYKaRQ[Ji@^1
+!s100 PKQFSzcfC>Y<jTI_Ma2fe2
+R8
+32
+R9
+!i10b 1
+R10
+R11
+R12
+!i113 1
+R13
+R14
+Ealu_control
+R1
+R2
+R3
+R4
+R5
+R0
+Z15 8../rtl/alu_control.vhd
+Z16 F../rtl/alu_control.vhd
+l0
+L12
+V>_2PnZ<W`71kRT6^k`MT;3
+!s100 P<FGCM>[j5`Q>gcG9nT1j2
+R8
+32
+R9
+!i10b 1
+R10
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-check_synthesis|../rtl/alu_control.vhd|
+Z18 !s107 ../rtl/alu_control.vhd|
+!i113 1
+R13
+R14
+Artl
+R2
+R3
+R4
+R5
+DEx4 work 11 alu_control 0 22 >_2PnZ<W`71kRT6^k`MT;3
+l24
+L22
+V81AJnz:;B[G>DD6Oo;_1F1
+!s100 ZPkJdzDV^aKz@;SEEa^hN0
+R8
+32
+R9
+!i10b 1
+R10
+R17
+R18
+!i113 1
+R13
+R14
+Econtrol_unit
+R1
+R2
+R3
+R4
+R5
+R0
+Z19 8../rtl/control_unit.vhd
+Z20 F../rtl/control_unit.vhd
+l0
+L12
+VmYg;jKb]8l?GkP^jFV?j72
+!s100 Z_fnEoX^<m0a3bNS<igTZ0
+R8
+32
+R9
+!i10b 1
+R10
+Z21 !s90 -reportprogress|300|-work|work|-2002|-explicit|-check_synthesis|../rtl/control_unit.vhd|
+Z22 !s107 ../rtl/control_unit.vhd|
+!i113 1
+R13
+R14
+Artl
+R2
+R3
+R4
+R5
+DEx4 work 12 control_unit 0 22 mYg;jKb]8l?GkP^jFV?j72
+l46
+L32
+V=J5k@hK<FR;QZJ:<_3S>P2
+!s100 i<CoeBi=P>ncX98Z>Sj@02
+R8
+32
+R9
+!i10b 1
+R10
+R21
+R22
+!i113 1
+R13
+R14
+Ememory
+Z23 w1537095306
+Z24 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
+R3
+R2
+R5
+R4
+R0
+Z25 8memory.vhd
+Z26 Fmemory.vhd
+l0
+L18
+V]YhW>BF5M?16JPO:IjS;F2
+!s100 DWj_g:Oh1NEB9L?NJ3>S33
+R8
+32
+R9
+!i10b 1
+R10
+Z27 !s90 -reportprogress|300|-work|work|-2002|-explicit|memory.vhd|
+Z28 !s107 memory.vhd|
+!i113 1
+Z29 o-work work -2002 -explicit
+R14
+Abehavioral
+R24
+R3
+R2
+R5
+R4
+DEx4 work 6 memory 0 22 ]YhW>BF5M?16JPO:IjS;F2
+l40
+L33
+Vj11BKgXej7U4k_dh7cPUY1
+!s100 YaS_m8K5SeB=1=lOb5eXb1
+R8
+32
+R9
+!i10b 1
+R10
+R27
+R28
+!i113 1
+R29
+R14
+Eprocessor
+Z30 w1540462471
+R2
+R3
+R4
+R5
+R0
+Z31 8../rtl/processor.vhd
+Z32 F../rtl/processor.vhd
+l0
+L12
+V^2QQSRZ:;HAX@?7Zg0NRD0
+!s100 D9e6ZblMn>o`lZR_H09TT2
+R8
+32
+R9
+!i10b 1
+R10
+Z33 !s90 -reportprogress|300|-work|work|-2002|-explicit|-check_synthesis|../rtl/processor.vhd|
+Z34 !s107 ../rtl/processor.vhd|
+!i113 1
+R13
+R14
+Artl
+R2
+R3
+R4
+R5
+DEx4 work 9 processor 0 22 ^2QQSRZ:;HAX@?7Zg0NRD0
+l94
+L28
+Vj<cZZj_608[LGbzAUbmfI1
+!s100 enLAP9T4e<:6UT0D7;40o1
+R8
+32
+R9
+!i10b 1
+R10
+R33
+R34
+!i113 1
+R13
+R14
+Eprocessor_tb
+Z35 w1537095325
+R3
+R2
+R4
+R5
+R0
+Z36 8processor_tb.vhd
+Z37 Fprocessor_tb.vhd
+l0
+L14
+Vn`iYfnL@@TOSm@niYeVzi1
+!s100 TP3]zWZd=AR;5i]B7@Jo^2
+R8
+32
+R9
+!i10b 1
+R10
+Z38 !s90 -reportprogress|300|-work|work|-2002|-explicit|processor_tb.vhd|
+Z39 !s107 processor_tb.vhd|
+!i113 1
+R29
+R14
+Atb
+R3
+R2
+R4
+R5
+DEx4 work 12 processor_tb 0 22 n`iYfnL@@TOSm@niYeVzi1
+l78
+L22
+VMKNYS5JSl1UokbX0DCbG:0
+!s100 4Y]CnD_T;Kj47b[VT>LIO0
+R8
+32
+R9
+!i10b 1
+R10
+R38
+R39
+!i113 1
+R29
+R14
+Ereg_bank
+Z40 w1540460916
+R2
+R3
+R4
+R5
+R0
+Z41 8../rtl/reg_bank.vhd
+Z42 F../rtl/reg_bank.vhd
+l0
+L15
+Vzh]^EAkoScIXHDROZGGe`0
+!s100 mcj_ZWF[]T]VE]XjFVS]T0
+R8
+32
+R9
+!i10b 1
+R10
+Z43 !s90 -reportprogress|300|-work|work|-2002|-explicit|-check_synthesis|../rtl/reg_bank.vhd|
+Z44 !s107 ../rtl/reg_bank.vhd|
+!i113 1
+R13
+R14
+Artl
+R2
+R3
+R4
+R5
+DEx4 work 8 reg_bank 0 22 zh]^EAkoScIXHDROZGGe`0
+l36
+L29
+V<=RcCF80kK]blR4lXF9:M2
+!s100 e^naLe@cS^Nc0]Nd`SHdJ3
+R8
+32
+R9
+!i10b 1
+R10
+R43
+R44
+!i113 1
+R13
+R14
