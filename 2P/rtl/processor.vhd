@@ -128,7 +128,7 @@ begin
 
   ArithmeticLogicUnit : alu
     port map(
-      OpA     => ReadData1IDEX,
+      OpA     => ForwardAMux,
       OpB     => AluSrcMux,
       Control => AluControl,
       Result  => DataAddr,
@@ -171,9 +171,9 @@ begin
                  DataAddrEXMEM when ForwardA = "10" else
                  (others => '0');
 
-  ForwardBMux <= ReadData2IDEX when ForwardA = "00" else
-                 MemToRegMux   when ForwardA = "01" else
-                 DataAddrEXMEM when ForwardA = "10" else
+  ForwardBMux <= ReadData2IDEX when ForwardB = "00" else
+                 MemToRegMux   when ForwardB = "01" else
+                 DataAddrEXMEM when ForwardB = "10" else
                  (others => '0');
 
   NopMux <= (others => '0') when NopRiesgo = '1' else
@@ -276,7 +276,7 @@ begin
       MemWriteEXMEM  <= MemWriteIDEX;
       RegDstMuxEXMEM <= RegDstMux;
       DataAddrEXMEM  <= DataAddr;
-      ReadData2EXMEM <= ReadData2IDEX;
+      ReadData2EXMEM <= ForwardBMux; -- OJO
     end if;
   end process;
 
