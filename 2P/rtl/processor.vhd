@@ -40,7 +40,7 @@ architecture rtl of processor is
   signal AluOp, AluOpIDEX                                                                                            : std_logic_vector (2 downto 0);
   signal ForwardA, ForwardB                                                                                          : std_logic_vector (1 downto 0);
   signal Z, RegWrite, Branch, Jump, MemToReg, MemWrite, MemRead, AluSrc, RegDst, NopRiesgo, IFIDWrite, PCwrite       : std_logic;
-  signal RegWriteIDEX, MemToRegIDEX, MemReadIDEX, MemWriteIDEX, BranchIDEX, RegDstIDEX, AluSrcIDEX                   : std_logic;
+  signal RegWriteIDEX, MemToRegIDEX, MemReadIDEX, MemWriteIDEX, BranchIDEX, RegDstIDEX, AluSrcIDEX, EfectiveBranch   : std_logic;
   signal RegWriteEXMEM, MemToRegEXMEM, MemReadEXMEM, MemWriteEXMEM                                                   : std_logic;
   signal RegWriteMEMWB, MemToRegMEMWB                                                                                : std_logic;
   component reg_bank
@@ -158,6 +158,9 @@ begin
   BranchZMux <= PC4 when BranchIDEX = '0' or Z = '0' else
                 (ExtendedInmIDEX(29 downto 0) & "00") + PC4IDEX;
 
+  EfectiveBranch <= '1' when Z = '1' and BranchIDEX = '1' else
+                    '0';
+
   ForwardA <= "01" when RegWriteMEMWB = '1' and (RegDstMuxMEMWB /= "0000") and not (RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX)) and (RegDstMuxMEMWB = RSIDEX) else
               "10" when RegWriteEXMEM = '1' and (RegDstMuxEXMEM /= "0000") and (RegDstMuxEXMEM = RSIDEX) else
               "00";
@@ -211,7 +214,10 @@ begin
       IDataInIFID <= (others => '0');
       PC4IFID     <= (others => '0');
     elsif rising_edge(Clk) then
-      if(IFIDWrite = '1') then
+      if(EfectiveBranch = '1') then
+        IDataInIFID <= (others => '0');
+        PC4IFID     <= PC4;
+      elsif(IFIDWrite = '1') then
         IDataInIFID <= IDataIn;
         PC4IFID     <= PC4;
       end if;
@@ -239,22 +245,41 @@ begin
       PC4IDEX         <= (others => '0');
       FunctIDEX       <= (others => '0');
     elsif rising_edge(Clk) then
-      BranchIDEX      <= NopMux(7);
-      MemToRegIDEX    <= NopMux(5);
-      MemWriteIDEX    <= NopMux(4);
-      MemReadIDEX     <= NopMux(3);
-      AluSrcIDEX      <= NopMux(2);
-      RegWriteIDEX    <= NopMux(1);
-      RegDstIDEX      <= NopMux(0);
-      RSIDEX          <= IDataInIFID (25 downto 21);
-      RTIDEX          <= IDataInIFID (20 downto 16);
-      RDIDEX          <= IDataInIFID (15 downto 11);
-      FunctIDEX       <= IDataInIFID (5 downto 0);
-      ExtendedInmIDEX <= ExtendedInm;
-      AluOpIDEX       <= NopMux(10 downto 8);
-      ReadData1IDEX   <= ReadData1;
-      ReadData2IDEX   <= ReadData2;
-      PC4IDEX         <= PC4IFID;
+      if (EfectiveBranch = '1') then
+        RegWriteIDEX    <= '0';
+        MemToRegIDEX    <= '0';
+        MemReadIDEX     <= '0';
+        MemWriteIDEX    <= '0';
+        BranchIDEX      <= '0';
+        RegDstIDEX      <= '0';
+        AluSrcIDEX      <= '0';
+        RSIDEX          <= (others => '0');
+        RTIDEX          <= (others => '0');
+        RDIDEX          <= (others => '0');
+        AluOpIDEX       <= (others => '0');
+        ReadData1IDEX   <= (others => '0');
+        ReadData2IDEX   <= (others => '0');
+        FunctIDEX       <= (others => '0');
+        ExtendedInmIDEX <= (others => '0');
+        PC4IDEX         <= PC4IFID;
+      else
+        BranchIDEX      <= NopMux(7);
+        MemToRegIDEX    <= NopMux(5);
+        MemWriteIDEX    <= NopMux(4);
+        MemReadIDEX     <= NopMux(3);
+        AluSrcIDEX      <= NopMux(2);
+        RegWriteIDEX    <= NopMux(1);
+        RegDstIDEX      <= NopMux(0);
+        RSIDEX          <= IDataInIFID (25 downto 21);
+        RTIDEX          <= IDataInIFID (20 downto 16);
+        RDIDEX          <= IDataInIFID (15 downto 11);
+        FunctIDEX       <= IDataInIFID (5 downto 0);
+        ExtendedInmIDEX <= ExtendedInm;
+        AluOpIDEX       <= NopMux(10 downto 8);
+        ReadData1IDEX   <= ReadData1;
+        ReadData2IDEX   <= ReadData2;
+        PC4IDEX         <= PC4IFID;
+      end if;
     end if;
   end process;
 
@@ -276,7 +301,7 @@ begin
       MemWriteEXMEM  <= MemWriteIDEX;
       RegDstMuxEXMEM <= RegDstMux;
       DataAddrEXMEM  <= DataAddr;
-      ReadData2EXMEM <= ForwardBMux; -- OJO
+      ReadData2EXMEM <= ForwardBMux;    -- OJO
     end if;
   end process;
 

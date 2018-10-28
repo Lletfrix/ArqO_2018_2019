@@ -49,13 +49,13 @@ add wave -noupdate -expand -group Registros -label {$3} -radix unsigned /process
 add wave -noupdate -expand -group Registros -label {$2} -radix unsigned /processor_tb/i_processor/Registry/regs(2)
 add wave -noupdate -expand -group Registros -label {$1} -radix unsigned /processor_tb/i_processor/Registry/regs(1)
 add wave -noupdate -expand -group Registros -label {$0} -radix unsigned -childformat {{/processor_tb/i_processor/Registry/regs(0)(31) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(30) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(29) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(28) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(27) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(26) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(25) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(24) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(23) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(22) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(21) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(20) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(19) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(18) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(17) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(16) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(15) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(14) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(13) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(12) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(11) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(10) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(9) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(8) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(7) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(6) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(5) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(4) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(3) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(2) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(1) -radix unsigned} {/processor_tb/i_processor/Registry/regs(0)(0) -radix unsigned}} -subitemconfig {/processor_tb/i_processor/Registry/regs(0)(31) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(30) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(29) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(28) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(27) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(26) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(25) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(24) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(23) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(22) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(21) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(20) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(19) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(18) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(17) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(16) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(15) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(14) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(13) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(12) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(11) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(10) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(9) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(8) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(7) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(6) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(5) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(4) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(3) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(2) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(1) {-height 16 -radix unsigned} /processor_tb/i_processor/Registry/regs(0)(0) {-height 16 -radix unsigned}} /processor_tb/i_processor/Registry/regs(0)
-add wave -noupdate -expand -group InstrDecode /processor_tb/i_processor/OpCodeIFID
-add wave -noupdate -expand -group InstrDecode -radix unsigned /processor_tb/i_processor/rsIFID
-add wave -noupdate -expand -group InstrDecode -radix unsigned /processor_tb/i_processor/rtIFID
-add wave -noupdate -expand -group InstrDecode -radix unsigned /processor_tb/i_processor/rdIFID
-add wave -noupdate -expand -group InstrDecode /processor_tb/i_processor/FunctIFID
-add wave -noupdate -expand -group InstrDecode -radix unsigned /processor_tb/i_processor/InmediateIFID
-add wave -noupdate -expand -group InstrDecode -radix unsigned /processor_tb/i_processor/PC4IFID
+add wave -noupdate -group InstrDecode /processor_tb/i_processor/OpCodeIFID
+add wave -noupdate -group InstrDecode -radix unsigned /processor_tb/i_processor/rsIFID
+add wave -noupdate -group InstrDecode -radix unsigned /processor_tb/i_processor/rtIFID
+add wave -noupdate -group InstrDecode -radix unsigned /processor_tb/i_processor/rdIFID
+add wave -noupdate -group InstrDecode /processor_tb/i_processor/FunctIFID
+add wave -noupdate -group InstrDecode -radix unsigned /processor_tb/i_processor/InmediateIFID
+add wave -noupdate -group InstrDecode -radix unsigned /processor_tb/i_processor/PC4IFID
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/RegWriteIDEX
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/RegDstIDEX
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/MemWriteIDEX
@@ -63,10 +63,10 @@ add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_t
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/MemToRegIDEX
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/AluSrcIDEX
 add wave -noupdate -group Execution -group ALUFlags -format Literal /processor_tb/i_processor/BranchIDEX
-add wave -noupdate -group Execution -expand -group InstructionFields -radix unsigned /processor_tb/i_processor/RTIDEX
-add wave -noupdate -group Execution -expand -group InstructionFields -radix unsigned /processor_tb/i_processor/ExtendedInmIDEX
-add wave -noupdate -group Execution -expand -group InstructionFields -radix unsigned /processor_tb/i_processor/RDIDEX
-add wave -noupdate -group Execution -expand -group InstructionFields /processor_tb/i_processor/FunctIDEX
+add wave -noupdate -group Execution -group InstructionFields -radix unsigned /processor_tb/i_processor/RTIDEX
+add wave -noupdate -group Execution -group InstructionFields -radix unsigned /processor_tb/i_processor/ExtendedInmIDEX
+add wave -noupdate -group Execution -group InstructionFields -radix unsigned /processor_tb/i_processor/RDIDEX
+add wave -noupdate -group Execution -group InstructionFields /processor_tb/i_processor/FunctIDEX
 add wave -noupdate -group Execution -expand -group ReadData /processor_tb/i_processor/ReadData1IDEX
 add wave -noupdate -group Execution -expand -group ReadData -radix binary /processor_tb/i_processor/ReadData2IDEX
 add wave -noupdate -group Execution -expand -group ReadData -label AluResult -radix unsigned /processor_tb/i_processor/DataAddr
@@ -88,8 +88,12 @@ add wave -noupdate -group Forwarding -radix unsigned /processor_tb/i_processor/F
 add wave -noupdate -group Forwarding -radix unsigned /processor_tb/i_processor/ForwardBMux
 add wave -noupdate -group Forwarding /processor_tb/i_processor/ForwardA
 add wave -noupdate -group Forwarding /processor_tb/i_processor/ForwardB
+add wave -noupdate -expand -group Branch -format Literal /processor_tb/i_processor/Branch
+add wave -noupdate -expand -group Branch -format Literal /processor_tb/i_processor/BranchIDEX
+add wave -noupdate -expand -group Branch -radix unsigned /processor_tb/i_processor/BranchZMux
+add wave -noupdate -expand -group Branch -format Literal /processor_tb/i_processor/Z
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 2} {877242 ps} 0}
+WaveRestoreCursors {{Cursor 2} {77398 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 401
 configure wave -valuecolwidth 250
@@ -105,4 +109,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {822574 ps} {933748 ps}
+WaveRestoreZoom {43910 ps} {155084 ps}
