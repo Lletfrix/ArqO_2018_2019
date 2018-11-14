@@ -28,7 +28,7 @@ int main( int argc, char *argv[])
 	}
 
 
-	
+
 	gettimeofday(&ini,NULL);
 
 	/* Main computation */
@@ -38,19 +38,19 @@ int main( int argc, char *argv[])
 	gettimeofday(&fin,NULL);
 	printf("Execution time: %f\n", ((fin.tv_sec*1000000+fin.tv_usec)-(ini.tv_sec*1000000+ini.tv_usec))*1.0/1000000.0);
 	printf("Total: %lf\n",res);
-	
 
 
-	free(m);
+
+	freeMatrix(m);
 	return 0;
 }
 
 
 tipo compute(tipo **matrix,int n)
 {
-	tipo sum;
+	tipo sum=0;
 	int i,j;
-	
+
 	for(i=0;i<n;i++)
 	{
 		for(j=0;j<n;j++)
