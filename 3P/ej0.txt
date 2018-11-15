@@ -1,0 +1,23 @@
+Viendo las salidas de los comandos que se nos indica en la práctica, vemos que tiene un i5 de 4 cores, que funcionan con 39 bits de dirección física y 42 de dirección virtual.
+Con respecto a las cachés, observamos que hay 3 niveles de cachés. A nivel 1 las de datos e instrucciones están diferenciadas en caché de datos y caché de instrucciones,
+cada una de ellas de 32 KB, asociativa de 8 vías. A nivel 2 y 3, la caché es unificada(para datos e instrucciones). La de nivel 2 es
+de 256 KB asociativa de 4 vías y la de nivel 3 es de 6144 KB asociativa de 12 vías. Todas las cachés trabajan con palabras de 64 bits.
+address sizes	: 39 bits physical, 48 bits virtual
+address sizes	: 39 bits physical, 48 bits virtual
+address sizes	: 39 bits physical, 48 bits virtual
+address sizes	: 39 bits physical, 48 bits virtual
+LEVEL1_ICACHE_SIZE                 32768
+LEVEL1_ICACHE_ASSOC                8
+LEVEL1_ICACHE_LINESIZE             64
+LEVEL1_DCACHE_SIZE                 32768
+LEVEL1_DCACHE_ASSOC                8
+LEVEL1_DCACHE_LINESIZE             64
+LEVEL2_CACHE_SIZE                  262144
+LEVEL2_CACHE_ASSOC                 4
+LEVEL2_CACHE_LINESIZE              64
+LEVEL3_CACHE_SIZE                  6291456
+LEVEL3_CACHE_ASSOC                 12
+LEVEL3_CACHE_LINESIZE              64
+LEVEL4_CACHE_SIZE                  0
+LEVEL4_CACHE_ASSOC                 0
+LEVEL4_CACHE_LINESIZE              0
