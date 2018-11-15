@@ -6,8 +6,8 @@ make &> /dev/null
 reps=3
 P=7
 Ninicio=$((10000+1024*$P))
-Npaso=256
-Nfinal=$(($Ninicio+1024*($P+1)))
+Npaso=64
+Nfinal=$((10000+1024*($P+1)))
 #Ninicio=100
 #Npaso=10
 #Nfinal=1000
