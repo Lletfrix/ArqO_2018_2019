@@ -5,9 +5,9 @@ make &> /dev/null
 # inicializar variables
 reps=3
 P=7
-Ninicio=$((4+4*$P))
+Ninicio=$((64+64*$P))
 Npaso=16
-Nfinal=$((4+4*($P+1)))
+Nfinal=$((64+64*($P+1)))
 #Ninicio=100
 #Npaso=10
 #Nfinal=1000
@@ -46,9 +46,9 @@ set grid
 set term png
 set output "$fcPNG"
 plot "$fDAT" using 1:3 with lines lw 2 title "normal read", \
-     "$fDAT" using 1:4 with lines lw 2 title "normal write",\
+     "$fDAT" using 1:4 with lines dt 2 title "normal write",\
      "$fDAT" using 1:6 with lines lw 2 title "trans read",\
-     "$fDAT" using 1:7 with lines lw 2 title "trans write"
+     "$fDAT" using 1:7 with lines dt 2 title "trans write"
 replot
 quit
 END_GNUPLOT
@@ -59,7 +59,7 @@ set xlabel "Matrix Size"
 set key right bottom
 set grid
 set term png
-set output "$fcPNG"
+set output "$ftPNG"
 plot "$fDAT" using 1:2 with lines lw 2 title "normal", \
      "$fDAT" using 1:5 with lines lw 2 title "trans"
 replot

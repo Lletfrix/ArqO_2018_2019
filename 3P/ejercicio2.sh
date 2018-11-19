@@ -49,7 +49,7 @@ gnuplot << END_GNUPLOT
     set output "$frPNG"
     filenames = "1024 2048 4096 8192"
     plot for [cache in filenames] "$fDAT".cache.".dat" using 1:2 with lines lw 2 title cache."_{slow}", \
-         for [cache in filenames] "$fDAT".cache.".dat" using 1:4 with lines lw 2 title cache."_{fast}"
+         for [cache in filenames] "$fDAT".cache.".dat" using 1:4 with lines dt 2 title cache."_{fast}"
     replot
     quit
 END_GNUPLOT
