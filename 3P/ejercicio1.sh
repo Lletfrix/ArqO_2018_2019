@@ -11,9 +11,9 @@ Nfinal=$((10000+1024*($P+1)))
 #Ninicio=100
 #Npaso=10
 #Nfinal=1000
-fDAT=slow_fast_time.dat
+fDAT=ejercicio1.dat
 fMEAN=means_time.dat
-fPNG=slow_fast_time.png
+fPNG=ejercicio1.png
 
 # borrar el fichero DAT y el fichero PNG
 rm -f $fDAT $fPNG $fMEAN
@@ -22,16 +22,11 @@ rm -f $fDAT $fPNG $fMEAN
 touch $fDAT
 
 echo "Running slow and fast..."
-# bucle para N desde P hasta Q
-#for N in $(seq $Ninicio $Npaso $Nfinal);
+
 for ((rep = 1; rep <= $reps; rep += 1)); do
     for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
     	echo "N: $N / $Nfinal..."
 
-    	# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
-    	# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
-    	# tercera columna (el valor del tiempo). Dejar los valores en variables
-    	# para poder imprimirlos en la misma línea del fichero de datos
     	slowTime=$(./slow $N | grep 'time' | awk '{print $3}')
     	fastTime=$(./fast $N | grep 'time' | awk '{print $3}')
 
@@ -41,15 +36,11 @@ done
 
 echo "Calculating means..."
 for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-    #slowTime_mean=$(awk -v N=$((N)) '{if ($1 == N) print $2;}' | awk -v rep=$((reps)) '{s+=$1} END {print s/rep}' < $fDAT)
-    #fastTime_mean=$(awk -v N=$((N)) '{if ($1 == N) print $3;}' | awk -v rep=$((reps)) '{s+=$1} END {print s/rep}' < $fDAT)
     means=$(awk -v N=$((N)) '{if ($1 == N) printf ("%s %s\n",$2,$3);}'  < $fDAT | awk -v rep=$((reps)) '{{s+=$1}; {f+=$2};} END {printf("%s %s\n",s/rep,f/rep)}')
     echo "$N $means" >> $fMEAN
 done
 
 echo "Generating plot..."
-# llamar a gnuplot para generar el gráfico y pasarle directamente por la entrada
-# estándar el script que está entre "<< END_GNUPLOT" y "END_GNUPLOT"
 gnuplot << END_GNUPLOT
 set title "Slow-Fast Execution Time"
 set ylabel "Execution time (s)"

@@ -31,15 +31,16 @@ for ((cache=1024; cache<=8192; cache*=2)); do
         rm $fCACHE
         valgrind --tool=cachegrind --I1=$cache,1,64 --D1=$cache,1,64 --LL=8192,1,64 --cachegrind-out-file=$fCACHE ./fast $N &> /dev/null
     	fastMisses=$(cg_annotate $fCACHE | head -n 30 | awk '{if($NF == "TOTALS") printf("%s %s\n", $5, $8)}' | sed 's/,//g')
+        rm $fCACHE
     	echo "$N $slowMisses $fastMisses" >> $fDAT$cache.dat
     done
 done
-echo "Generating plot..."
+echo "Generating plots..."
 # llamar a gnuplot para generar el gráfico y pasarle directamente por la entrada
 # estándar el script que está entre "<< END_GNUPLOT" y "END_GNUPLOT"
 
 gnuplot << END_GNUPLOT
-    set title "Cache read misses"
+    set title "Slow-Fast Cache Read Misses"
     set ylabel "Read Misses"
     set xlabel "Matix Size"
     set key left top
@@ -53,7 +54,7 @@ gnuplot << END_GNUPLOT
     quit
 END_GNUPLOT
 gnuplot << END_GNUPLOT
-    set title "Cache write misses"
+    set title "Slow-Fast Cache Write Misses"
     set ylabel "Write Misses"
     set xlabel "Matix Size"
     set key left top
@@ -66,3 +67,5 @@ gnuplot << END_GNUPLOT
     replot
     quit
 END_GNUPLOT
+
+rm $fCACHE
