@@ -8,7 +8,7 @@ void compute(tipo **matrixA, tipo **matrixB, tipo **matrixC, int n);
 void matrixTranspose(tipo **matrix, int n);
 
 int main( int argc, char *argv[]){
-    int n, i, j;
+    int n;
     tipo **a=NULL, **b=NULL, **res=NULL;
     struct timeval fin,ini;
     printf("Word size: %ld bits\n",8*sizeof(tipo));
@@ -44,7 +44,7 @@ int main( int argc, char *argv[]){
 
     gettimeofday(&fin,NULL);
     printf("Execution time: %f\n", ((fin.tv_sec*1000000+fin.tv_usec)-(ini.tv_sec*1000000+ini.tv_usec))*1.0/1000000.0);
-    
+
     freeMatrix(a);
     freeMatrix(b);
     freeMatrix(res);

@@ -67,5 +67,3 @@ gnuplot << END_GNUPLOT
     replot
     quit
 END_GNUPLOT
-
-rm $fCACHE
