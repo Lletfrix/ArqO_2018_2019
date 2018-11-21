@@ -8,9 +8,6 @@ P=7
 Ninicio=$((64+64*$P))
 Npaso=16
 Nfinal=$((64+64*($P+1)))
-#Ninicio=100
-#Npaso=10
-#Nfinal=1000
 fDAT=ejercicio4
 ftPNG=ej4_time.png
 frPNG=ej4_read.png
@@ -21,9 +18,9 @@ fCACHE=cache4.dat
 rm -f $fDAT*.dat $frPNG $ftPNG $fwPNG
 
 echo "Running normal and transposed..."
-for ((nvias = 4; nvias <= 8; nvias*=2)); do
+for ((nvias = 1; nvias <= 8; nvias*=8)); do
     for ((cache = 16384; cache <= 32768; cache*=2)); do
-        touch "$fDAT"_"$cache"_"$nvias".dat
+        touch "$fDAT"-"$cache"-"$nvias".dat
         for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
         	echo "N: $N / $Nfinal..."
             multTime=$(valgrind --tool=cachegrind --I1=$cache,$nvias,64 --D1=$cache,$nvias,64 --cachegrind-out-file=$fCACHE ./mult $N 2> /dev/null | grep 'time' | awk '{print $3}')
@@ -47,7 +44,7 @@ gnuplot << END_GNUPLOT
     set grid
     set term png
     set output "$ftPNG"
-    filenames = "-16384-4 -16384-8 -32768-4 -32768-8"
+    filenames = "-16384-1 -16384-8 -32768-1 -32768-8"
     plot for [comb in filenames] "$fDAT".comb.".dat" using 1:2 with lines lw 2 title "normal".comb, \
          for [comb in filenames] "$fDAT".comb.".dat" using 1:5 with lines dt 2 title "trans".comb
     replot
@@ -62,7 +59,7 @@ gnuplot << END_GNUPLOT
     set grid
     set term png
     set output "$frPNG"
-    filenames = "-16384-4 -16384-8 -32768-4 -32768-8"
+    filenames = "-16384-1 -16384-8 -32768-1 -32768-8"
     plot for [comb in filenames] "$fDAT".comb.".dat" using 1:3 with lines lw 2 title "normal".comb, \
          for [comb in filenames] "$fDAT".comb.".dat" using 1:6 with lines dt 2 title "trans".comb
     replot
@@ -77,7 +74,7 @@ gnuplot << END_GNUPLOT
     set grid
     set term png
     set output "$fwPNG"
-    filenames = "-16384-4 -16384-8 -32768-4 -32768-8"
+    filenames = "-16384-1 -16384-8 -32768-1 -32768-8"
     plot for [comb in filenames] "$fDAT".comb.".dat" using 1:4 with lines lw 2 title "normal".comb, \
          for [comb in filenames] "$fDAT".comb.".dat" using 1:7 with lines dt 2 title "trans".comb
     replot

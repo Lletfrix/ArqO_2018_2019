@@ -5,12 +5,9 @@ make &> /dev/null
 # inicializar variables
 reps=3
 P=7
-#Ninicio=$((2000+1024*$P))
-#Npaso=64
-#Nfinal=$((2000+1024*($P+1)))
-Ninicio=100
-Npaso=100
-Nfinal=1000
+Ninicio=$((2000+1024*$P))
+Npaso=64
+Nfinal=$((2000+1024*($P+1)))
 fDAT=cache_
 frPNG=cache_lectura.png
 fwPNG=cache_escritura.png
