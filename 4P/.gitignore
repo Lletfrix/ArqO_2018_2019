@@ -1,3 +1,5 @@
 *.dat
-./DAT/*
+/DAT/*
+/DAT/*.pdf
+/DAT/*.c
 *.txt
