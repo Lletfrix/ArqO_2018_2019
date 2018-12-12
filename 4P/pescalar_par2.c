@@ -13,11 +13,10 @@ int main(int argc, char ** argv)
 	struct timeval fin,ini;
 	float sum=0;
     unsigned long long m;
-    if(argc != 3){
+    if(argc != 2){
         return 0;
     }else{
-        m = atol(argv[1]);
-        omp_set_num_threads(atoi(argv[2]));
+        m = strtoll(argv[1], NULL, 10);
     }
 	A = generateVector(m);
 	B = generateVector(m);

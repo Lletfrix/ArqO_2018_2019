@@ -16,7 +16,7 @@ int main(int argc, char ** argv)
     if(argc<2){
         m=2;
     }else{
-        m = atol(argv[1]);
+	m = strtoll(argv[1], NULL, 10);
     }
 	A = generateVector(m);
 	B = generateVector(m);
